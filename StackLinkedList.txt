@@ -1,0 +1,155 @@
+#include<stdio.h>
+#include<string.h>
+struct Node
+{
+    int data;
+    struct Node *next;
+}*head=NULL,*temp,*newn,*n,*p,*h,*t;
+int a[1000];
+void push(int data)
+{
+    n=(struct Node *)malloc(sizeof(struct Node));
+    newn=(struct Node *)malloc(sizeof(struct Node));
+    n->next=NULL;
+    n->data=data;
+    newn->next=NULL;
+    newn->data=data;
+    if(head==NULL)
+    {
+        head=newn;
+        h=n;
+    }
+    else
+    {
+        temp=head;
+        n->next=h;
+        h=n;
+        while(temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=newn;
+        
+    }
+}
+int pop()
+{
+    if(isEmpty())
+    {
+        printf("Stack Underflow");
+        return 0;
+    }
+    else
+    {
+    int item;
+    temp=head;
+    if(head->next==NULL)
+    {
+        head=NULL;
+        item=temp->data;
+        free(temp);
+        h=NULL;
+        return item;
+    }
+    else
+    {
+    while(temp->next!=NULL)
+    {
+        p=temp;
+        temp=temp->next;
+    }
+    t=h;
+    h=h->next;
+    free(t);
+    p->next=NULL;
+    item=temp->data;
+    free(temp);
+    return item;
+    }
+    }
+}
+int peek()
+{
+    if(isEmpty())
+    {
+        printf("Stack Empty");
+        return 0;
+    }
+    else
+    {
+    return h->data;
+    }
+}
+void display()
+{
+    if(isEmpty())
+    {
+        printf("Stack Empty");
+    }
+    else
+    {
+        t=h;
+        while(t->next!=NULL)
+        {
+            printf("%d ",t->data);
+            t=t->next;
+        }
+        printf("%d",t->data);
+        
+    }
+
+}
+int isEmpty()
+{
+    if(head==NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int main()
+{
+    int N, queryType, data;
+    scanf("%d", &N);
+    for (int query = 1; query <= N; query++)
+    {
+        scanf("%d", &queryType);
+        switch (queryType)
+        {
+        case 1:
+            scanf("%d", &data);
+            push(data);
+            break;
+        case 2:
+            if(!isEmpty())
+            {
+                printf("Popped Element: %d\n", pop());
+            }
+            else
+            {
+                pop();
+                printf("\n");
+            }
+            break;
+        case 3:
+            if(!isEmpty())
+            {
+                printf("Top Element: %d\n", peek());
+            }
+            else
+            {
+                peek();
+                printf("\n");
+            }
+            break;
+        case 4:
+            display();
+            printf("\n");
+            break;
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,132 @@
+#include<stdio.h>
+#include <stdlib.h>
+struct Node
+{
+    int data;
+    struct Node *next;
+} *head=NULL;
+
+void insert(int prevData, int data)
+{
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+    struct Node *temp = head;
+    
+    newNode->data = data;
+    newNode->next = NULL;
+    
+    while(temp)
+    {
+        if(temp->data != prevData)
+            temp = temp->next;
+        else
+            break;
+    }
+    
+    if(temp == NULL)
+        printf("Element not found\n");
+    else
+    {
+        newNode->next = temp->next;
+        temp->next = newNode;
+        printf("Inserted: %d\n", data);
+    }
+}
+
+void append(int data)
+{
+    struct Node *ptr;
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+    
+    temp->data = data;
+    temp->next = NULL;
+    
+    if(head == NULL)
+        head = temp;
+    else
+    {
+        ptr->next = temp;
+        ptr = ptr->next;
+    }
+    
+    ptr = temp;
+    
+    printf("Appended: %d\n", data);
+}
+
+void delete(int data)
+{
+    struct Node *prev, *temp = head;
+    
+    if(temp!=NULL && temp->data == data)
+    {
+        head = temp->next;
+        free(temp);
+        printf("Deleted: %d\n", data);
+        return;
+    }
+    else
+    {
+        while(temp!=NULL && temp->data!=data)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+    }
+    
+    if(temp == NULL)
+        printf("Element not found\n");
+    else
+    {
+        printf("Deleted: %d\n", data);
+        prev->next = temp->next;
+        free(temp);
+    }
+}
+
+void display()
+{
+    struct Node *disp = head;
+    
+    if(head == NULL)
+        printf("List is empty\n");
+    else
+    {
+        while(disp)
+        {
+            printf("%d ", disp->data);
+            disp = disp->next;
+        }
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int N, C, prevData, data;
+    scanf("%d", &N);
+    while(N--)
+    {
+        scanf("%d", &C);
+        switch(C)
+        {
+        case 1:
+            scanf("%d %d", &prevData, &data);
+            insert(prevData, data);
+            break;
+        case 2:
+            scanf("%d", &data);
+            append(data);
+            break;
+        case 3:
+            scanf("%d", &data);
+            delete(data);
+            break;
+        case 4:
+            display();
+            break;
+        case 5:
+            printList(head);
+        }
+    }
+    return 0;
+}

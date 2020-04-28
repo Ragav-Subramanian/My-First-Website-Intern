@@ -1,0 +1,110 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define SIZE 1000
+
+int heap_size=0;
+int heap[SIZE];
+
+void swap(int *a,int *b)
+{
+    int t=*a;
+    *a=*b;
+    *b=t;
+}
+
+void buildMinHeap(int element)
+{
+    heap_size++;
+    int i=heap_size;
+    heap[i]=element;
+    while(i > 0 && heap[parent(i)]>heap[i])
+    {
+        swap(&heap[parent(i)],&heap[i]);
+        i=parent(i);
+    }
+}
+
+int parent(int i)
+{
+    return (i)/2;
+}
+
+int left(int i)
+{
+    return (2*i);
+}
+
+int right(int i)
+{
+    return (2*i+1);
+
+}
+
+int delMin()
+{
+    int min=heap[1];
+    heap[1]=heap[heap_size];
+    heap[heap_size] = 0;
+    heap_size--;
+    minHeapify(1);
+    return min;
+}
+
+int check(int i){
+    if((i >= (heap_size/2)) && (i < heap_size)){
+        return 1;
+    }
+    return 0;
+}
+
+void minHeapify(int i)
+{
+    int l=left(i);
+    int r=right(i);
+    int smallest=i;
+
+    if(l<heap_size && heap[l]<heap[i])
+    {
+        smallest=l;
+    }
+    if(r<heap_size && heap[r]<heap[smallest])
+    {
+        smallest=r;
+    }
+    if(smallest!=i)
+    {
+        swap(&heap[i],&heap[smallest]);
+        minHeapify(smallest);
+    }
+}
+
+void printLevelOrder()
+{
+    int i;
+    for(i=1;i<=heap_size;i++)
+    {
+        printf("%d ",heap[i]);
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int q,n,el;
+    scanf("%d",&n);
+    while(n--)
+    {
+        scanf("%d",&q);
+        switch(q)
+        {
+            case 1: scanf("%d",&el); 
+                    buildMinHeap(el);
+                    break;
+            case 2: printf("%d\n",delMin());
+                    break;
+            case 3: printLevelOrder();
+                    break;
+        }
+    }
+}

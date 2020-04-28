@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include <stdlib.h>
+
+int q[10000];
+int rear=-1;
+int front=-1;
+
+void enq(int data)
+{
+    if(rear==-1)
+    {
+        rear=0;
+        front=0;
+        q[rear]=data;
+    }
+    else
+    {
+        q[++rear]=data;
+    }
+}
+
+int dq()
+{
+    front++;
+    return q[front-1];
+}
+
+
+int main()
+{
+int size,src,i,j;
+scanf("%d %d",&size,&src);
+int adjmat[size+1][size+1],vis[size+1];
+for(i=1;i<=size;i++)
+{
+    for(j=1;j<=size;j++)
+    {
+        scanf("%d",&adjmat[i][j]);
+    }
+}
+
+for(i=1;i<=size;i++)
+{
+    vis[i]=0;
+}
+
+vis[src]=1;
+enq(src);
+while(rear>=front)
+{
+    int c=dq();
+    printf("%d ",c);
+for(i=1;i<=size;i++)
+{
+
+    if(adjmat[c][i]==1 && vis[i]==0)
+    {
+        vis[i]=1;
+        enq(i);
+    }
+}}
+return 0;
+}

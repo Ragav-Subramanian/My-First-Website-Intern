@@ -1,0 +1,156 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+
+typedef struct node{int exponent;int coefficient;struct node* next;}polynomial;
+
+polynomial* create()
+{
+    polynomial* p=NULL;
+    return p;
+}
+
+polynomial* makePoly(int exponent,int coefficient)
+{
+    polynomial* p=(polynomial*)malloc(sizeof(polynomial));
+    p->exponent=exponent;
+    p->coefficient=coefficient;
+    p->next=NULL;
+    return p;
+}
+
+polynomial* insert(polynomial* head,int exponent,int coefficient)
+{
+    if(coefficient==0)
+        return head;
+    polynomial* temp=makePoly(exponent,coefficient);
+    polynomial* t=head;
+    polynomial* p=head;
+    int x=1;
+    if(!head)
+        return temp;
+    if(exponent > head->exponent)
+    {
+        temp->next=head;
+        return temp;
+    }
+    while(t && exponent < t->exponent)
+    {
+        t=t->next;
+        if(x>1)
+            p=p->next;
+        x++;
+    }
+    if(t)
+        if(t->exponent == exponent)
+        {
+            t->coefficient+=coefficient;
+            return head;
+        }
+    temp->next=p->next;
+    p->next=temp;
+    return head;
+}
+
+void display(polynomial* a)
+{
+    while(a)
+    {
+        if(a->coefficient>0)
+            printf("+%dx^%d",a->coefficient,a->exponent);
+        else
+            printf("%dx^%d",a->coefficient,a->exponent);
+        a=a->next;
+    }
+    printf("\n");
+}
+
+polynomial* add(polynomial* a,polynomial* b)
+{
+    polynomial* res=NULL;
+    while(a && b)
+    {
+        if(a->exponent == b->exponent)
+        {
+            int num=a->coefficient+b->coefficient;
+            res=insert(res,a->exponent,num);
+            a=a->next;
+            b=b->next;
+        }
+        else if(a->exponent > b->exponent)
+        {
+            res=insert(res,a->exponent,a->coefficient);
+            a=a->next;
+        }
+        else
+        {
+            res=insert(res,b->exponent,b->coefficient);
+            b=b->next;
+        }
+    }
+    while(a)
+    {
+        res=insert(res,a->exponent,a->coefficient);
+        a=a->next;
+    }
+    while(b)
+    {
+        res=insert(res,b->exponent,b->coefficient);
+        b=b->next;
+    }
+    return res;
+}
+
+int intoNumber(char* s,int start,int end)
+{
+    int i,num=0;
+    for(i=start;i<end-1;i++)
+    {
+        num+=s[i]-'0';
+        num*=10;
+    }
+    num+=s[end-1]-'0';
+    return num;
+}
+
+polynomial* createExpression(char* s)
+{
+    int n=strlen(s),i=0;
+    polynomial* poly=NULL;
+    while(i<n)
+    {
+        int num=0,j,exp=0;
+        if(s[i]>='0' && s[i]<='9')
+        {
+            j=i;
+            while(s[i]>='0' && s[i]<='9')
+                i++;
+            num=intoNumber(s,j,i);
+            if(j-1 >-1)
+                if(s[j-1]=='-')
+                    num=-num;
+            while(s[i]<'0' || s[i]>'9')
+                i++;
+            j=i;
+            while(s[i]>='0' && s[i]<='9')
+                i++;
+            exp=intoNumber(s,j,i);
+            if(s[j-1]=='-')
+                exp=-exp;
+            poly=insert(poly,exp,num);
+        }
+        i++;
+    }
+    return poly;
+}
+
+int main()
+{
+    polynomial* poly1=NULL,*poly2=NULL,*poly3=NULL;
+    char a[1002],b[1002];
+    scanf("%s\n%s",a,b);
+    poly1=createExpression(a);
+    poly2=createExpression(b);
+    poly3=add(poly1,poly2);
+    display(poly3);
+}

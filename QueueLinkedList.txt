@@ -1,0 +1,121 @@
+#include<stdio.h>
+#include <stdlib.h>
+struct Node
+{
+    int data;
+    struct Node* next;
+}*head=NULL,*tail=NULL,*temp;
+
+int count=0;
+
+void insert(int data)
+{ 
+    struct Node *newn=(struct Node*)malloc(sizeof(struct Node));
+    if(count==0)
+    {
+     newn->data=data;
+     newn->next=NULL;
+     printf("Inserted: %d\n",newn->data);
+     head=newn;
+     tail=newn;
+     count++;
+    }
+    else
+    {
+        temp=head;
+        newn->data=data;
+        newn->next=NULL;
+        printf("Inserted: %d\n",newn->data);
+        while(temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=newn;
+    }
+}
+int delete()
+{
+    if(head==NULL)
+    {
+        printf("Queue is empty\n");
+        return 0;
+    }
+    else if(head->next==NULL)
+    {
+        temp=tail;
+        printf("Deleted: %d\n",head->data);
+        tail=NULL;
+        head=NULL;
+        count=0;
+        free(temp);
+        return 0;
+    }
+    else
+    {
+        temp=tail;
+        printf("Deleted: %d\n",head->data);
+        tail=tail->next;
+        head=head->next;
+        free(temp);
+        return 0;
+    }
+}
+void display()
+{
+    
+    if(tail==NULL)
+    {
+        printf("Queue is empty\n");
+    }
+    else
+    {
+     temp=tail;
+     while(temp->next!=NULL)
+     {
+       printf("%d ", temp->data);
+       temp=temp->next;
+     }
+     printf("%d\n",temp->data);
+    }
+}    
+void printReverse(struct Node *ptr)
+{
+    if(ptr != NULL)
+    {
+        printReverse(ptr->next);
+        printf("%d ", ptr->data);
+    }
+    if(ptr == head){
+        if(ptr == NULL){
+            printf("Queue is empty");
+        }
+        printf("\n");
+    }
+}
+int main()
+{
+    int N, C, prevData, data;
+    scanf("%d", &N);
+    while(N--)
+    {
+
+        scanf("%d", &C);
+        switch(C)
+        {
+        case 1:
+            scanf("%d", &data);
+            insert(data);
+            break;
+        case 2:
+            delete();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            printReverse(head);
+            break;
+        }
+    }
+    return 0;
+}

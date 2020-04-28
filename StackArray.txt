@@ -1,0 +1,104 @@
+#include<stdio.h>
+int top=0,a[100];
+void push(int data)
+{
+   if(isFull())
+    printf("\nStack Overflow");
+   else
+    a[++top]=data;
+}
+int pop()
+{
+    if(isEmpty())
+    {
+        printf("Stack Underflow");
+        return 0;
+    }
+    else
+     return a[top--];
+}
+int peek()
+{ 
+    if(isEmpty())
+    {
+        printf("Stack Empty");
+        return 0;
+    }
+    else
+     return a[top];
+}
+void display()
+{
+    if(top==0)
+     printf("Stack Empty");
+    else
+     for(int i=1;i<top+1;i++)
+      printf("%d ",a[i]);
+}
+int isEmpty()
+{
+    if(top==0)
+     return 1;
+    else
+     return 0;
+    
+}
+int isFull()
+{
+    if(top==100)
+     return 1;
+    else
+     return 0;
+}
+int main()
+{
+    int N, queryType, data;
+    scanf("%d", &N);
+    for(int query = 1; query <= N; query++)
+    {
+        scanf("%d", &queryType);
+        switch(queryType)
+        {
+        case 1:
+            scanf("%d", &data);
+            if(isFull())
+            {
+                push(data);
+                printf("\n");
+            }
+            else
+            {
+                push(data);
+            }
+            break;
+        case 2:
+            if(isEmpty())
+            {
+                pop();
+            }
+            else
+            {
+                printf("Popped Element: %d", pop());
+            }
+            printf("\n");
+            break;
+        case 3:
+            if(isEmpty())
+            {
+                peek();
+            }
+            else
+            {
+                printf("Top Element: %d", peek());
+            }
+            printf("\n");
+            break;
+        case 4:
+            printf("Stack Elements: ");
+            display();
+            printf("\n");
+            break;
+        }
+    }
+    return 0;
+}

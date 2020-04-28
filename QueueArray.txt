@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include <stdlib.h>
+#define SIZE 20
+int ht=SIZE;
+int f=0,b=0,a[20];
+void insert(int data)
+{
+    if(f==ht)
+    {
+        printf("Queue is full\n");
+    }
+    else
+    {
+        a[++f]=data;
+    }
+}
+int delete()
+{
+    if(f==b)
+    {
+       printf("Queue is empty\n"); 
+       return 0;
+    }
+    else
+    {
+        ht++;
+        return a[++b];
+    }
+}
+void display()
+{
+   if(isEmpty())
+    {
+         printf("Queue is empty\n");
+    }
+    for(int i=b+1;i<=f;i++)
+    {
+        printf("%d ",a[i]);
+    }
+    printf("\n");
+}
+int isEmpty()
+{
+    if(f==b)
+     return 1;
+    else
+     return 0;
+}
+int main()
+{
+    int N, C, data;
+    scanf("%d", &N);
+    while(N--)
+    {
+        scanf("%d", &C);
+        switch(C)
+        {
+        case 1:
+            scanf("%d", &data);
+            insert(data);
+            break;
+        case 2:
+            if(!isEmpty())
+            {
+                data = delete();
+                printf("Deleted: %d\n", data);
+            }
+            else
+            {
+                delete();
+            }
+            break;
+        case 3:
+            display();
+            break;
+        }
+    }
+}

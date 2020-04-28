@@ -1,0 +1,57 @@
+#include<stdio.h>
+
+void sort(int arr[],int from, int to);
+
+int main()
+{
+    int listsize;
+    scanf("%d",&listsize);
+    int values[listsize];
+    int index;
+    for(index=0; index<listsize; index++)
+    {
+        scanf("%d",&values[index]);
+    }
+
+    //Now call sort
+    sort(values,0,index-1);
+    //Print the sorted list
+    for(index=0; index<listsize; index++)
+    {
+        printf("%d ",values[index]);
+    }
+
+}
+void sort(int arr[],int from, int to)
+{
+    if(from < to)
+    {
+        int pivot = partition(arr,from,to);
+        sort(arr,from,pivot);
+        sort(arr,pivot+1,to);
+    }
+}
+int partition(int arr[],int left, int right)
+{
+    int pivotValue = arr[left + (right - left) / 2];
+    while(1)
+    {
+        while(arr[left] < pivotValue)
+        {
+            left++;
+        }
+        while(arr[right] > pivotValue)
+        {
+            right--;
+        }
+        if(left >= right)
+        {
+            return right;
+        }
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+        left++;
+        right--;
+    }
+}
